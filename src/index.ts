@@ -1,5 +1,11 @@
 import express,{Request, Response} from 'express'
 import bodyParser from "body-parser";
+import { blogsCollections, postsCollections, runDb } from './repositories/db';
+import { authRouter } from './routes/auth-router';
+import { blogsRouter } from './routes/blog-router';
+import { postsRouter } from './routes/post-router';
+import { testingRouter } from './routes/testing-router';
+import { usersRouter } from './routes/user-router';
 const app = express()
 const port = process.env.PORT || 3000;
 
