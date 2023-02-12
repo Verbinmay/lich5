@@ -1,6 +1,6 @@
-import express,{Request, Response} from 'express'
+import express from 'express'
 import bodyParser from "body-parser";
-import { blogsCollections, postsCollections, runDb } from './repositories/db';
+import { runDb } from './repositories/db';
 import { authRouter } from './routes/auth-router';
 import { blogsRouter } from './routes/blog-router';
 import { postsRouter } from './routes/post-router';
