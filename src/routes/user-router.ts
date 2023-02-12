@@ -1,5 +1,11 @@
 import { Request, Response, Router } from "express";
 import { usersServer } from "../domain/user-service";
+import {
+  emailCreateValidation,
+  inputValidationMiddleware,
+  loginOrEmailValidation,
+  passwordCreateValidation,
+} from "../middleware/input-validation-middleware";
 import { usersRepository } from "../repositories/user-reposytory";
 import { PaginatorUser } from "../types";
 
@@ -31,17 +37,33 @@ usersRouter.get("/", async (req: Request, res: Response) => {
   res.status(200).send(viewFoundUsers);
 });
 
-usersRouter.post("/", async (req: Request, res: Response) => {
-  const newUserCreated = await usersServer.createUser(
-    req.body.login,
-    req.body.password,
-    req.body.email
-  );
-  const viewNewUser = {
-    id: newUserCreated.id,
-    login: newUserCreated.login,
-    email: newUserCreated.email,
-    createdAt: newUserCreated.createdAt,
-  };
-  res.status(201).send(viewNewUser);
+usersRouter.post(
+  "/",
+  loginOrEmailValidation,
+  passwordCreateValidation,
+  emailCreateValidation,
+  inputValidationMiddleware,
+  async (req: Request, res: Response) => {
+    const newUserCreated = await usersServer.createUser(
+      req.body.login,
+      req.body.password,
+      req.body.email
+    );
+    const viewNewUser = {
+      id: newUserCreated.id,
+      login: newUserCreated.login,
+      email: newUserCreated.email,
+      createdAt: newUserCreated.createdAt,
+    };
+    res.status(201).send(viewNewUser);
+  }
+);
+
+usersRouter.delete("/:id", async (req: Request, res: Response) => {
+  const deletedUserById = await usersServer.deleteUser(req.params.id);
+  if (deletedUserById) {
+    res.send(204);
+  } else {
+    res.send(404);
+  }
 });

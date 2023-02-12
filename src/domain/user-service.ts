@@ -8,6 +8,7 @@ export const usersServer = {
     if (!user) {
       return false;
     }
+
     const match = await bcrypt.compare(password, user.password);
     return match;
   },
@@ -30,7 +31,7 @@ export const usersServer = {
     const today = new Date();
     isCreateAt = today.toISOString();
 
-    const hash = await bcrypt.hash(password, 10).then(function (hash) {});
+    const hash = await bcrypt.hash(password, 10);
     const makeUser = {
       id: isId,
       login: login,
@@ -38,7 +39,10 @@ export const usersServer = {
       createdAt: isCreateAt,
       password: hash,
     };
-    const addNewUser = usersRepository.createUser(makeUser)
-    return addNewUser
+    const addNewUser = usersRepository.createUser(makeUser);
+    return addNewUser;
+  },
+  async deleteUser(id: string): Promise<boolean> {
+    return await usersRepository.deleteUser(id);
   },
 };

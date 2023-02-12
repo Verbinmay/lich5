@@ -104,8 +104,8 @@ async (req: Request, res: Response) => {
 postsRouter.delete("/:id",
 avtorizationValidationMiddleware,
 async (req: Request, res: Response) => {
-  const DeletePostInBd = await postsService.deletePost(req.params.id);
-  if (DeletePostInBd) {
+  const deletePostInBd = await postsService.deletePost(req.params.id);
+  if (deletePostInBd) {
     res.send(204);
   } else {
     res.send(404);

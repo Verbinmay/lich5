@@ -66,8 +66,12 @@ export const usersRepository = {
     });
     return searchUser;
   },
-  async createUser (user:any){
-    const result = await usersCollections.insertOne(user)
-    return user
-  }
+  async createUser(user: any) {
+    const result = await usersCollections.insertOne(user);
+    return user;
+  },
+  async deleteUser(id: string): Promise<boolean> {
+    const result = await usersCollections.deleteOne({ id: id });
+    return result.deletedCount === 1;
+  },
 };

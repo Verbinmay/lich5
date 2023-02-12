@@ -16,7 +16,7 @@ export const blogsCollections = db
   export const postsCollections = db
   .collection<PostViewModel>("Posts");
   export const usersCollections = db
-  .collection<UserViewModel>("Users");
+  .collection("Users");
 
 
 
