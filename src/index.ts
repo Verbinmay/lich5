@@ -19,12 +19,6 @@ app.use('/posts', postsRouter)
 app.use('/testing', testingRouter)
 app.use('/users', usersRouter)
 
-app.delete("/testing/all-data", async (req: Request, res: Response) => {
-  let result = await blogsCollections.deleteMany({});
-  let result1 =await postsCollections.deleteMany({});
-  
-  res.send(204);
-});
 
 
 const startApp = async () => {
