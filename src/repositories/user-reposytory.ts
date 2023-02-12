@@ -9,11 +9,17 @@ export const usersRepository = {
     searchLoginTerm: string | undefined | null,
     searchEmailTerm: string | undefined | null
   ) {
-    const filter: any = {};
-    if (searchLoginTerm) {
+    let filter: any = {};
+    if (searchLoginTerm && searchEmailTerm) {
+      filter = {
+        $or: [
+          { login: { $regex: "(?i)" + searchLoginTerm + "(?-i)" } },
+          { email: { $regex: "(?i)" + searchEmailTerm + "(?-i)" } },
+        ],
+      };
+    } else if (searchLoginTerm) {
       filter.login = { $regex: "(?i)" + searchLoginTerm + "(?-i)" };
-    }
-    if (searchEmailTerm) {
+    } else if (searchEmailTerm) {
       filter.email = { $regex: "(?i)" + searchEmailTerm + "(?-i)" };
     }
     let ItSortBy = "createdAt";
