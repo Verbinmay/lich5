@@ -1,8 +1,10 @@
 import { Request, Response, Router } from "express";
 import { usersServer } from "../domain/user-service";
+import { avtorizationValidationMiddleware } from "../middleware/avtorization-middleware";
 import {
   emailCreateValidation,
   inputValidationMiddleware,
+  loginCreateValidation,
   loginOrEmailValidation,
   passwordCreateValidation,
 } from "../middleware/input-validation-middleware";
@@ -11,35 +13,40 @@ import { PaginatorUser } from "../types";
 
 export const usersRouter = Router({});
 
-usersRouter.get("/", async (req: Request, res: Response) => {
-  const foundUsers = await usersRepository.findUsers(
-    req.query.sortBy?.toString(),
-    req.query.shortDescription?.toString(),
-    req.query.pageNumber?.toString(),
-    req.query.pageSize?.toString(),
-    req.query.searchLoginTerm?.toString(),
-    req.query.searchEmailTerm?.toString()
-  );
-  const viewFoundUsers: PaginatorUser = {
-    pagesCount: foundUsers.pagesCount,
-    page: foundUsers.page,
-    pageSize: foundUsers.pageSize,
-    totalCount: foundUsers.totalCount,
-    items: foundUsers.items.map((m) => {
-      return {
-        id: m.id,
-        login: m.login,
-        email: m.email,
-        createdAt: m.createdAt,
-      };
-    }),
-  };
-  res.status(200).send(viewFoundUsers);
-});
+usersRouter.get(
+  "/",
+  avtorizationValidationMiddleware,
+  async (req: Request, res: Response) => {
+    const foundUsers = await usersRepository.findUsers(
+      req.query.sortBy?.toString(),
+      req.query.shortDescription?.toString(),
+      req.query.pageNumber?.toString(),
+      req.query.pageSize?.toString(),
+      req.query.searchLoginTerm?.toString(),
+      req.query.searchEmailTerm?.toString()
+    );
+    const viewFoundUsers: PaginatorUser = {
+      pagesCount: foundUsers.pagesCount,
+      page: foundUsers.page,
+      pageSize: foundUsers.pageSize,
+      totalCount: foundUsers.totalCount,
+      items: foundUsers.items.map((m) => {
+        return {
+          id: m.id,
+          login: m.login,
+          email: m.email,
+          createdAt: m.createdAt,
+        };
+      }),
+    };
+    res.status(200).send(viewFoundUsers);
+  }
+);
 
 usersRouter.post(
   "/",
-  loginOrEmailValidation,
+  avtorizationValidationMiddleware,
+  loginCreateValidation,
   passwordCreateValidation,
   emailCreateValidation,
   inputValidationMiddleware,
@@ -59,11 +66,15 @@ usersRouter.post(
   }
 );
 
-usersRouter.delete("/:id", async (req: Request, res: Response) => {
-  const deletedUserById = await usersServer.deleteUser(req.params.id);
-  if (deletedUserById) {
-    res.send(204);
-  } else {
-    res.send(404);
+usersRouter.delete(
+  "/:id",
+  avtorizationValidationMiddleware,
+  async (req: Request, res: Response) => {
+    const deletedUserById = await usersServer.deleteUser(req.params.id);
+    if (deletedUserById) {
+      res.send(204);
+    } else {
+      res.send(404);
+    }
   }
-});
+);

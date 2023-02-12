@@ -110,14 +110,14 @@ export const loginOrEmailValidation = body("loginOrEmail")
   .isLength({ min:3, max: 10 })
   .withMessage("login length must be min 3, max 10");
   
-  export const passwordCreateValidation = body("login")
+  export const passwordCreateValidation = body("password")
   .isString()
   .withMessage("Isnt string")
   .bail()
   .isLength({ min:6, max: 20 })
   .withMessage("login length must be min 6, max 20");
 
-  export const emailCreateValidation = body("login")
+  export const emailCreateValidation = body("email")
   .isEmail()
   .withMessage("Isnt email")
   .bail()
