@@ -1,5 +1,8 @@
 import { Request, Response, Router } from "express";
 import { blogsService } from "../domain/blog-service";
+import { postsService } from "../domain/post-service";
+import { avtorizationValidationMiddleware } from "../middleware/avtorization-middleware";
+import { websiteUrlValidation, nameValidation, descriptionValidation, inputValidationMiddleware, isBlogIdValidationInPath, shortDescriptionValidation, titleValidation, contentValidation } from "../middleware/input-validation-middleware";
 import { blogsRepository } from "../repositories/blog-repository";
 import { PaginatorBlog, BlogViewModel, PaginatorPost, PostViewModel } from "../types";
 

@@ -1,8 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import { validationResult, body} from "express-validator";
+import { validationResult, body } from "express-validator";
 import { blogsRepository } from "../repositories/blog-repository";
 import { blogsCollections } from "../repositories/db";
-
 
 export const nameValidation = body("name")
   .isString()
@@ -74,8 +73,11 @@ export const isBlogIdValidation = body("blogId").custom(async (value) => {
   }
   return true;
 });
-export async function isBlogIdValidationInPath(req: Request,res: Response,
-  next: NextFunction) {
+export async function isBlogIdValidationInPath(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   let result = await blogsRepository.findBlogById(req.params.id);
   if (result === null) {
     return res.send(404);
@@ -83,6 +85,22 @@ export async function isBlogIdValidationInPath(req: Request,res: Response,
     return next();
   }
 }
+
+export const loginOrEmailValidation = body("loginOrEmail")
+  .isString()
+  .withMessage("loginOrEmail isnt string")
+  .bail()
+  .trim()
+  .notEmpty()
+  .withMessage("loginOrEmail is empty");
+
+  export const passwordValidation = body("password")
+  .isString()
+  .withMessage("password isnt string")
+  .bail()
+  .trim()
+  .notEmpty()
+  .withMessage("password is empty");
 
 export const inputValidationMiddleware = (
   req: Request,

@@ -1,3 +1,47 @@
-import { Router } from "express";
+import { Request, Response, Router } from "express";
+import { usersServer } from "../domain/user-service";
+import { usersRepository } from "../repositories/user-reposytory";
+import { PaginatorUser } from "../types";
 
 export const usersRouter = Router({});
+
+usersRouter.get("/", async (req: Request, res: Response) => {
+  const foundUsers = await usersRepository.findUsers(
+    req.query.sortBy?.toString(),
+    req.query.shortDescription?.toString(),
+    req.query.pageNumber?.toString(),
+    req.query.pageSize?.toString(),
+    req.query.searchLoginTerm?.toString(),
+    req.query.searchEmailTerm?.toString()
+  );
+  const viewFoundUsers: PaginatorUser = {
+    pagesCount: foundUsers.pagesCount,
+    page: foundUsers.page,
+    pageSize: foundUsers.pageSize,
+    totalCount: foundUsers.totalCount,
+    items: foundUsers.items.map((m) => {
+      return {
+        id: m.id,
+        login: m.login,
+        email: m.email,
+        createdAt: m.createdAt,
+      };
+    }),
+  };
+  res.status(200).send(viewFoundUsers);
+});
+
+usersRouter.post("/", async (req: Request, res: Response) => {
+  const newUserCreated = await usersServer.createUser(
+    req.body.login,
+    req.body.password,
+    req.body.email
+  );
+  const viewNewUser = {
+    id: newUserCreated.id,
+    login: newUserCreated.login,
+    email: newUserCreated.email,
+    createdAt: newUserCreated.createdAt,
+  };
+  res.status(201).send(viewNewUser);
+});
