@@ -19,7 +19,7 @@ usersRouter.get(
   async (req: Request, res: Response) => {
     const foundUsers = await usersRepository.findUsers(
       req.query.sortBy?.toString(),
-      req.query.shortDescription?.toString(),
+      req.query.sortDiretion?.toString(),
       req.query.pageNumber?.toString(),
       req.query.pageSize?.toString(),
       req.query.searchLoginTerm?.toString(),
