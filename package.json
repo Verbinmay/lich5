@@ -5,6 +5,11 @@
   "repository": "https://github.com/Verbinmay/lich5.git",
   "author": "Mark_Maistrenko <revanmayfall@gmail.com>",
   "license": "MIT",
+  "scripts":{
+    "watch": "tsc -w",
+    "dev": "nodemon --inspect dist/index.js",
+   "test": "jest"
+    },   
   "dependencies": {
     "express": "^4.18.2"
   },
