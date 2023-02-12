@@ -3,7 +3,7 @@ import { blogsCollections, postsCollections, usersCollections } from "../reposit
 
 export const testingRouter = Router({});
 
-testingRouter.delete("/testing/all-data", async (req: Request, res: Response) => {
+testingRouter.delete("/all-data", async (req: Request, res: Response) => {
     let result = await blogsCollections.deleteMany({});
     let result1 =await postsCollections.deleteMany({});
     let result2 =await usersCollections.deleteMany({});
