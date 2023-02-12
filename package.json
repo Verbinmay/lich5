@@ -5,13 +5,20 @@
   "repository": "https://github.com/Verbinmay/lich5.git",
   "author": "Mark_Maistrenko <revanmayfall@gmail.com>",
   "license": "MIT",
-  "scripts":{
+  "scripts": {
     "watch": "tsc -w",
     "dev": "nodemon --inspect dist/index.js",
-   "test": "jest"
-    },   
+    "test": "jest"
+  },
   "dependencies": {
-    "express": "^4.18.2"
+    "@types/jest": "^29.4.0",
+    "@types/supertest": "^2.0.12",
+    "body-parser": "^1.20.1",
+    "express": "^4.18.2",
+    "jest": "^29.4.2",
+    "mongodb": "^5.0.1",
+    "supertest": "^6.3.3",
+    "ts-jest": "^29.0.5"
   },
   "devDependencies": {
     "@types/express": "^4.17.17",
